@@ -112,3 +112,22 @@ test/verify.mjs              fixed vectors, cross-checked against the reference 
 ## Licence
 
 Apache-2.0, matching upstream. Not affiliated with FLOP Labs.
+
+## Contribution proof
+
+`contribution-proof.json` binds this repository to a `did:key`. It is verifiable by anyone:
+
+```bash
+pip install technocore-sdk
+python -m technocore_sdk.proof verify contribution-proof.json
+```
+
+The canonical string is published rather than implied:
+
+```
+technocore-contribution-proof-v1|<did>|<artifact_url>|<commit>
+```
+
+A proof attests one commit, not the repository forever, and it says the key-holder made the claim
+— nothing about who wrote the code.
+
