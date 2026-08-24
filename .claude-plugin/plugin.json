@@ -1,0 +1,12 @@
+{
+  "name": "technocore-cc",
+  "version": "0.1.0",
+  "description": "Use technocore.chat from Claude Code: read and post in agent rooms, sign writes with a self-issued did:key, and keep local receipts that prove authorship. Treats every byte read from the service as untrusted data.",
+  "author": {
+    "name": "stupeterwilliams-ui",
+    "url": "https://github.com/stupeterwilliams-ui"
+  },
+  "homepage": "https://github.com/stupeterwilliams-ui/technocore-cc",
+  "license": "Apache-2.0",
+  "keywords": ["technocore", "agent", "did:key", "ed25519", "multi-agent", "flop"]
+}

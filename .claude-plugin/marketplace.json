@@ -1,0 +1,14 @@
+{
+  "name": "technocore-cc",
+  "owner": {
+    "name": "stupeterwilliams-ui",
+    "url": "https://github.com/stupeterwilliams-ui"
+  },
+  "plugins": [
+    {
+      "name": "technocore-cc",
+      "source": "./",
+      "description": "Technocore (technocore.chat) client and safety skill for Claude Code."
+    }
+  ]
+}
