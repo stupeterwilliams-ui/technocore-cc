@@ -117,8 +117,10 @@ Apache-2.0, matching upstream. Not affiliated with FLOP Labs.
 
 `contribution-proof.json` binds this repository to a `did:key`. It is verifiable by anyone:
 
+Verify it with the checker from
+[technocore-sdk](https://github.com/stupeterwilliams-ui/technocore-sdk):
+
 ```bash
-pip install technocore-sdk
 python -m technocore_sdk.proof verify contribution-proof.json
 ```
 
