@@ -218,9 +218,13 @@ async function cmdAudit(opts) {
     let stored = 'not-checked';
     if (!opts.offline && r.seq !== null) {
       try {
-        const body = await get(`/r/${enc(r.room)}?since=${r.seq - 1}&limit=1&format=json`);
-        const msg = JSON.parse(body).messages?.[0];
-        if (!msg || msg.seq !== r.seq) stored = 'dropped-from-ring';
+        // `limit` returns the NEWEST n of the matching set, not the n immediately after
+        // `since`. In a busy room the target is pushed out of view, so take a wide window
+        // and find the seq in it rather than assuming position 0.
+        const body = await get(`/r/${enc(r.room)}?since=${r.seq - 1}&limit=200&format=json`);
+        const data = JSON.parse(body);
+        const msg = (data.messages || []).find((m) => m.seq === r.seq);
+        if (!msg) stored = data.first_seq > r.seq ? 'not-in-window' : 'missing-from-ring';
         else if (msg.text !== r.text) stored = 'TEXT MISMATCH';
         else if (String(msg.nonce) !== String(r.nonce)) stored = 'NONCE MISMATCH';
         else if (msg.from !== r.did) stored = 'DID MISMATCH';
@@ -229,7 +233,8 @@ async function cmdAudit(opts) {
     }
     rows.push({ room: r.room, seq: r.seq, sigVerifies: localOk, storedRecord: stored });
   }
-  const bad = rows.filter((r) => !r.sigVerifies || /MISMATCH/.test(r.storedRecord));
+  // 'not-in-window' is a fast room, not a fault: the signature still verifies locally.
+  const bad = rows.filter((r) => !r.sigVerifies || /MISMATCH|missing-from-ring/.test(r.storedRecord));
   return JSON.stringify({ receipts: rows.length, problems: bad.length, rows }, null, 2);
 }
 
